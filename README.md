@@ -1,4 +1,4 @@
-# CurlInterceptor
+# cURL-Interceptor
 
 A cURL interceptor which intercept OkHttp http request and generate cURL
 
@@ -13,7 +13,7 @@ buildscript {
 
 dependencies {
     ...
-    // Daniel (2016-06-23 14:37:35): Added CurlInterceptor
+    // Daniel (2016-06-23 14:37:35): Added cURL-Interceptor
     implementation 'com.danielworld:curl-interceptor:2.0.3'
     
     // logger

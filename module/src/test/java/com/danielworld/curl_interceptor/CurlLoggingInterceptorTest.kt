@@ -105,7 +105,7 @@ class CurlLoggingInterceptorTest {
             .put(requestBody)
             .build()
 
-        // @namgyu.park (2019-12-27) : CurlInterceptor insert Content-Type automatically ASOP.
+        // @namgyu.park (2019-12-27) : cURL-Interceptor insert Content-Type automatically ASOP.
         val expected =
             "curl 'https://custom.test.com/editMyInfo' -X PUT -H 'Accept-Encoding: gzip' -H 'User-Agent: okhttp/3.10.0' -H 'Content-Type: application/json' -d '${body}' --compressed"
 
