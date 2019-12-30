@@ -1,5 +1,4 @@
 # cURL-Interceptor
-
 A cURL interceptor which intercept OkHttp http request and generate cURL
 
 ## Gradle build
@@ -27,6 +26,10 @@ dependencies {
 
 }
 </pre>
+
+## License
+cURL-Interceptor is licensed under the Apache License, Version 2.0.
+See [LICENSE](LICENSE.txt) for full license text.
 
 ```
 Copyright (c) 2019 DanielWorld.
