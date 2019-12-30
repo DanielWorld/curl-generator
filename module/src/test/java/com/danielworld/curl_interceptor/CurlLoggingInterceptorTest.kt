@@ -1,4 +1,20 @@
-package com.danielworld.curl_interceptor_sample
+/*
+ * Copyright (c) 2019 DanielWorld.
+ * @Author Namgyu Park
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.danielworld.curl_interceptor
 
 import android.os.Build
 import okhttp3.Request
@@ -14,7 +30,7 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 /**
- * Created by Daniel Park on 2019-12-27
+ * Created by Namgyu Park on 2019-12-27
  */
 
 // For Robolectrics 4.3.x, Android SDK 29 requires Java 9 (have Java 8). so set sdk = 28 immediately
@@ -26,7 +42,7 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 class CurlLoggingInterceptorTest {
 
-    val curlLoggingInterceptor = CurlLoggingInterceptor(true)
+    val curlLoggingInterceptor = com.danielworld.curl_interceptor.CurlLoggingInterceptor(true)
 
     @Before
     fun setUp() { // @namgyu.park (2019-12-27) : initialize mock, before executing each test
