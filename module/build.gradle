@@ -27,7 +27,7 @@ publish {
     artifactId = 'curl-interceptor'
     publishVersion = project.ext.versionName
     desc = 'A cURL interceptor which intercept OkHttp http request and generate cURL'
-    website = 'https://github.com/DanielWorld/curl-interceptor'
+    website = 'https://github.com/DanielWorld/cURL-Interceptor'
     issueTracker = "${website}/issues"
     repository = "${website}.git"
 }
