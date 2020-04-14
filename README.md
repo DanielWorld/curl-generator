@@ -13,11 +13,8 @@ buildscript {
 dependencies {
     ...
     // Daniel (2016-06-23 14:37:35): Added cURL-Interceptor
-    implementation 'com.danielworld:curl-interceptor:2.0.3'
+    implementation 'com.danielworld:curl-interceptor:1.0.1'
     
-    // logger
-    implementation 'com.danielworld:logger:1.0.4'
-        
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61"
     
