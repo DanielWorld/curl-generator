@@ -17,6 +17,7 @@
 package com.danielworld.curl_interceptor
 
 import android.os.Build
+import com.danielworld.curl_interceptor.internal.CurlGenerator
 import okhttp3.Request
 import okhttp3.RequestBody
 import org.json.JSONException
@@ -39,9 +40,7 @@ import org.robolectric.annotation.Config
 )
 // Why use Robolectric ? : Because it contains many mocks of Android class which running on local JVM. (No need Android emulator or Device.// So. Use RobolectricTestRunner.class instead of MockitoJUnitRunner.class. Robolectric handle Android API.
 @RunWith(RobolectricTestRunner::class)
-class CurlLoggingInterceptorTest {
-
-    val curlLoggingInterceptor = com.danielworld.curl_interceptor.CurlLoggingInterceptor(true)
+class CurlInterceptorTest {
 
     @Before
     fun setUp() { // @namgyu.park (2019-12-27) : initialize mock, before executing each test
@@ -70,7 +69,9 @@ class CurlLoggingInterceptorTest {
         val expected =
             "curl 'https://custom.test.com/event' -X POST -H 'Accept-Encoding: gzip' -H 'User-Agent: okhttp/3.10.0' -H 'Content-Type: application/json' -d '${body}' --compressed"
 
-        Assert.assertEquals(expected, curlLoggingInterceptor.cURLGenerator(request))
+        val actual = CurlGenerator(request, " ").build()
+
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
@@ -86,7 +87,9 @@ class CurlLoggingInterceptorTest {
         val expected =
             "curl 'https://custom.test.com/getUserList?id=diwl112i3' -X GET -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Safari/605.1.15' -H 'Content-Type: application/json'"
 
-        Assert.assertEquals(expected, curlLoggingInterceptor.cURLGenerator(request))
+        val actual = CurlGenerator(request, " ").build()
+
+        Assert.assertEquals(expected, actual)
     }
 
     @Test
@@ -108,6 +111,8 @@ class CurlLoggingInterceptorTest {
         val expected =
             "curl 'https://custom.test.com/editMyInfo' -X PUT -H 'Accept-Encoding: gzip' -H 'User-Agent: okhttp/3.10.0' -H 'Content-Type: application/json' -d '${body}' --compressed"
 
-        Assert.assertEquals(expected, curlLoggingInterceptor.cURLGenerator(request))
+        val actual = CurlGenerator(request, " ").build()
+
+        Assert.assertEquals(expected, actual)
     }
 }
