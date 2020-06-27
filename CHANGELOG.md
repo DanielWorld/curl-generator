@@ -1,7 +1,15 @@
-# 1.0.1
-2020-01-07
-- Update license
+Change Log
+==========
 
-# 1.0.0
-2019-12-30
-- Init commit
+## Version 1.0.1
+
+_2020-01-07_
+
+ * New : Update license
+
+
+## Version 1.0.0
+
+_20219-12-30_
+
+ * New : Init commit

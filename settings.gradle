@@ -1,2 +1,2 @@
-include ':sample', ':module'
-rootProject.name='curl-interceptor'
+include ':library'
+rootProject.name='curl-generator'

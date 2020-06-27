@@ -16,10 +16,10 @@ dependencies {
     implementation 'com.danielworld:curl-interceptor:1.0.1'
     
     // kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72"
     
-    // annotation
-    implementation 'androidx.annotation:annotation:1.1.0'
+    // okhttp
+    implementation "com.squareup.okhttp3:okhttp:4.7.2"
 
 }
 </pre>
