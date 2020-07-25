@@ -1,7 +1,8 @@
 package com.danielworld.curl_generator
 
 import android.os.Build
-import com.danielworld.curl_generator.internal.CurlGenerator
+import com.danielworld.curl.generator.CurlInterceptor
+import com.danielworld.curl.generator.internal.CurlGenerator
 import okhttp3.FormBody
 import okhttp3.Request
 import org.junit.Assert
@@ -73,7 +74,10 @@ class DelimiterTest {
                 "--compressed \\\n" +
                 "\"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.BACKSLASH_NEW_LINE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.BACKSLASH_NEW_LINE
+        ).build()
 
 //        print(actual)
 

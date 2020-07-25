@@ -1,7 +1,8 @@
 package com.danielworld.curl_generator
 
 import android.os.Build
-import com.danielworld.curl_generator.internal.CurlGenerator
+import com.danielworld.curl.generator.CurlInterceptor
+import com.danielworld.curl.generator.internal.CurlGenerator
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Request
 import okhttp3.RequestBody
@@ -56,7 +57,10 @@ class HttpPostRequestTest {
 
         val expected = "curl -X POST -H \"$AUTHORIZATION:$mAuthorization\" -H \"$CONTENT_TYPE:$mJsonContentType; charset=utf-8\" -d '$body' \"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.EMPTY_SPACE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.EMPTY_SPACE
+        ).build()
 
         Assert.assertEquals(expected, actual)
     }
@@ -78,7 +82,10 @@ class HttpPostRequestTest {
 
         val expected = "curl -X POST -H \"$ACCEPT_ENCODING:$mGzip\" -H \"$AUTHORIZATION:$mAuthorization\" -H \"$CONTENT_TYPE:$mJsonContentType; charset=utf-8\" -d '$body' --compressed \"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.EMPTY_SPACE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.EMPTY_SPACE
+        ).build()
 
         Assert.assertEquals(expected, actual)
     }

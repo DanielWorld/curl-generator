@@ -1,4 +1,4 @@
-package com.danielworld.curl_generator.sample
+package com.danielworld.curl.generator.sample
 
 import android.app.Activity
 import android.os.Bundle

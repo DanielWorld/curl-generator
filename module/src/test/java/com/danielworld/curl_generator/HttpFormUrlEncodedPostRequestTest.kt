@@ -1,7 +1,8 @@
 package com.danielworld.curl_generator
 
 import android.os.Build
-import com.danielworld.curl_generator.internal.CurlGenerator
+import com.danielworld.curl.generator.CurlInterceptor
+import com.danielworld.curl.generator.internal.CurlGenerator
 import okhttp3.FormBody
 import okhttp3.Request
 import org.junit.Assert
@@ -69,7 +70,10 @@ class HttpFormUrlEncodedPostRequestTest {
 
         val expected = "curl -X POST -H \"$CONTENT_TYPE:$mFormUrlEncodedContentType\" --data-urlencode \"$GRANT_TYPE=${URLEncoder.encode(mGrantType)}\" --data-urlencode \"$USER_NAME=${URLEncoder.encode(mUserName)}\" --data-urlencode \"$PASSWORD=${URLEncoder.encode(mPassword)}\" \"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.EMPTY_SPACE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.EMPTY_SPACE
+        ).build()
 
         Assert.assertEquals(expected, actual)
     }
@@ -92,7 +96,10 @@ class HttpFormUrlEncodedPostRequestTest {
 
         val expected = "curl -X POST -H \"$ACCEPT_ENCODING:$mGzip\" -H \"$CONTENT_TYPE:$mFormUrlEncodedContentType\" --data-urlencode \"$GRANT_TYPE=${URLEncoder.encode(mGrantType)}\" --data-urlencode \"$USER_NAME=${URLEncoder.encode(mUserName)}\" --data-urlencode \"$PASSWORD=${URLEncoder.encode(mPassword)}\" --compressed \"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.EMPTY_SPACE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.EMPTY_SPACE
+        ).build()
 
         Assert.assertEquals(expected, actual)
     }

@@ -1,7 +1,8 @@
 package com.danielworld.curl_generator
 
 import android.os.Build
-import com.danielworld.curl_generator.internal.CurlGenerator
+import com.danielworld.curl.generator.CurlInterceptor
+import com.danielworld.curl.generator.internal.CurlGenerator
 import okhttp3.Request
 import org.junit.Assert
 import org.junit.Before
@@ -49,7 +50,10 @@ class HttpGetRequestTest {
         val expected =
             "curl -X GET \"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.EMPTY_SPACE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.EMPTY_SPACE
+        ).build()
 
         Assert.assertEquals(expected, actual)
     }
@@ -66,7 +70,10 @@ class HttpGetRequestTest {
         val expected =
             "curl -X GET -H \"$USER_AGENT:$mWebUserAgent\" \"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.EMPTY_SPACE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.EMPTY_SPACE
+        ).build()
 
         Assert.assertEquals(expected, actual)
     }
@@ -84,7 +91,10 @@ class HttpGetRequestTest {
         val expected =
             "curl -X GET -H \"$USER_AGENT:$mWebUserAgent\" -H \"$AUTHORIZATION:$mAuthorization\" \"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.EMPTY_SPACE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.EMPTY_SPACE
+        ).build()
 
         Assert.assertEquals(expected, actual)
     }
@@ -102,7 +112,10 @@ class HttpGetRequestTest {
         val expected =
             "curl -X GET -H \"$USER_AGENT:$mWebUserAgent\" -H \"$USER_AGENT:$mWebUserAgent\" \"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.EMPTY_SPACE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.EMPTY_SPACE
+        ).build()
 
         Assert.assertEquals(expected, actual)
     }

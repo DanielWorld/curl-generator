@@ -1,4 +1,4 @@
-package com.danielworld.curl_generator.internal
+package com.danielworld.curl.generator.internal
 
 import okhttp3.*
 import okio.Buffer

@@ -2,7 +2,8 @@ package com.danielworld.curl_generator
 
 import android.os.Build
 import android.os.Environment
-import com.danielworld.curl_generator.internal.CurlGenerator
+import com.danielworld.curl.generator.CurlInterceptor
+import com.danielworld.curl.generator.internal.CurlGenerator
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.Request
@@ -58,7 +59,10 @@ class HttpFileUploadPostRequestTest  {
                 "-F \"file=@${file.name}\" \\\n" +
                 "\"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.BACKSLASH_NEW_LINE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.BACKSLASH_NEW_LINE
+        ).build()
 
         Assert.assertEquals(expected, actual)
     }
@@ -82,7 +86,10 @@ class HttpFileUploadPostRequestTest  {
                 "--data-binary @filename \\\n" +
                 "\"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.BACKSLASH_NEW_LINE).build()
+        val actual = CurlGenerator(
+            request,
+            CurlInterceptor.Delimiter.BACKSLASH_NEW_LINE
+        ).build()
 
         Assert.assertEquals(expected, actual)
     }

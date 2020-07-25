@@ -1,7 +1,7 @@
 package com.danielworld.curl_generator.model
 
 import android.os.Build
-import com.danielworld.curl_generator.internal.Header
+import com.danielworld.curl.generator.internal.Header
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -28,8 +28,10 @@ class HeaderTest {
     @Test
     fun testHeaderEqualsSameNameDifferentValue() {
 
-        val header1 = Header("LINE", "ab22lf")
-        val header2 = Header("LINE", "bd2f2f")
+        val header1 =
+            Header("LINE", "ab22lf")
+        val header2 =
+            Header("LINE", "bd2f2f")
 
         Assert.assertNotEquals(header1, header2)
     }
@@ -37,8 +39,10 @@ class HeaderTest {
     @Test
     fun testHeaderEqualsSameNameSameValue() {
 
-        val header1 = Header("LINE", "ab22lf")
-        val header2 = Header("LINE", "ab22lf")
+        val header1 =
+            Header("LINE", "ab22lf")
+        val header2 =
+            Header("LINE", "ab22lf")
 
         Assert.assertEquals(header1, header2)
     }
@@ -46,8 +50,10 @@ class HeaderTest {
     @Test
     fun testHeaderEqualsDifferentNameSameValue() {
 
-        val header1 = Header("NAVER", "ab22lf")
-        val header2 = Header("LINE", "ab22lf")
+        val header1 =
+            Header("NAVER", "ab22lf")
+        val header2 =
+            Header("LINE", "ab22lf")
 
         Assert.assertNotEquals(header1, header2)
     }
@@ -55,8 +61,10 @@ class HeaderTest {
     @Test
     fun testHeaderEqualsDifferentAll() {
 
-        val header1 = Header("NAVER", "bd2lf")
-        val header2 = Header("LINE", "ab22lf")
+        val header1 =
+            Header("NAVER", "bd2lf")
+        val header2 =
+            Header("LINE", "ab22lf")
 
         Assert.assertNotEquals(header1, header2)
     }

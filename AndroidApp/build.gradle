@@ -7,7 +7,7 @@ android {
     buildToolsVersion '30.0.1'
 
     defaultConfig {
-        applicationId 'com.danielworld.curl_generator.sample'
+        applicationId 'com.danielworld.curl.generator.sample'
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1

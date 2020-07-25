@@ -1,4 +1,4 @@
-package com.danielworld.curl_generator.internal
+package com.danielworld.curl.generator.internal
 
 internal class Header(private val name: String?, private val value: String?) {
     fun name(): String? {

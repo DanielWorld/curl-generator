@@ -1,14 +1,16 @@
-package com.danielworld.curl_generator
+package com.danielworld.curl.generator
 
 import android.util.Log
-import com.danielworld.curl_generator.internal.CurlGenerator
+import com.danielworld.curl.generator.internal.CurlGenerator
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 
 
 class CurlInterceptor(private val enableLog: Boolean,  private val delimiter: String) : Interceptor  {
-    constructor(enableLog: Boolean) : this(enableLog, Delimiter.BACKSLASH_NEW_LINE)
+    constructor(enableLog: Boolean) : this(enableLog,
+        Delimiter.BACKSLASH_NEW_LINE
+    )
 
     private val TAG = CurlInterceptor::class.simpleName
 
