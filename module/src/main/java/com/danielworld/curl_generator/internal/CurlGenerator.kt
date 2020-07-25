@@ -1,17 +1,15 @@
 package com.danielworld.curl_generator.internal
 
-import okhttp3.MediaType
-import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.*
 import okio.Buffer
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.*
 
 /**
- * 0. curl Options : https://curl.haxx.se/docs/manpage.html
+ * 0. curl Options : https://curl.haxx.se/docs/manpage.html <br>
  * 1. curl change log : https://curl.haxx.se/changes.html <br>
- * 2. cURL 주요 옵션 : https://www.lesstif.com/software-architect/curl-http-get-post-rest-api-14745703.html
+ * 2. How to HTTP with curl : https://ec.haxx.se/http
  */
 internal class CurlGenerator(private val request: Request, private val delimiter : String) {
     constructor(request: Request) : this (request, " ")
@@ -19,9 +17,12 @@ internal class CurlGenerator(private val request: Request, private val delimiter
 
     private val url = request.url.toString()
     private val method : String = request.method
+    private val headers: MutableList<Header> = LinkedList()     // Allowed same name's header like 'Set-Cookie' (https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2)
     private var contentType: String? = null
     private var body : String? = null
-    private val headers: MutableList<Header> = LinkedList()     // Allowed same name's header like 'Set-Cookie' (https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2)
+    private var formUrlEncodedBody: FormBody? = null
+    private var multipartFormBody: MultipartBody? = null
+    private var binaryBody : RequestBody? = null
     private var compressed: Boolean = false
 
     companion object {
@@ -29,6 +30,9 @@ internal class CurlGenerator(private val request: Request, private val delimiter
         private const val FORMAT_METHOD = "-X %1\$s"
         private const val FORMAT_HEADER = "-H \"%1\$s:%2\$s\""
         private const val FORMAT_BODY = "-d '%1\$s'"
+        private const val FORMAT_URL_ENCODED_BODY = "--data-urlencode \"%1\$s=%2\$s\""
+        private const val FORMAT_MULTIPART_FORM_BODY = "-F \"%1\$s=%2\$s\""
+        private const val FORMAT_BINARY_BODY = "--data-binary @%1\$s"
 
         private const val CONTENT_TYPE = "Content-Type"
         private const val ACCEPT_ENCODING = "Accept-Encoding"
@@ -38,7 +42,19 @@ internal class CurlGenerator(private val request: Request, private val delimiter
         val requestBody = request.body
         requestBody?.let { rb ->
             this.contentType = getContentType(rb)
-            this.body = getBodyAsString(rb)
+            if (contentType?.contains("application/x-www-form-urlencoded") == true && rb is FormBody) {
+                formUrlEncodedBody = rb
+            }
+            else if (contentType?.contains("multipart/form-data") == true && rb is MultipartBody) {
+                // @namgyu.park (2020-07-13) : multipart/form-data 의 경우에만 대응할 것.
+                multipartFormBody = rb
+            }
+            else if (contentType?.contains("application/octet-stream") == true) {
+                binaryBody = rb
+            }
+            else {
+                this.body = getBodyAsString(rb)
+            }
         }
 
         val headers = request.headers
@@ -74,8 +90,48 @@ internal class CurlGenerator(private val request: Request, private val delimiter
                 CONTENT_TYPE, contentType))
         }
 
-        if (body != null) {
-            parts.add(String.format(FORMAT_BODY, body))
+        formUrlEncodedBody?.let {
+            val size = it.size
+            for (index in 0 until size) {
+                parts.add(String.format(FORMAT_URL_ENCODED_BODY, it.encodedName(index), it.encodedValue(index)))
+            }
+        } ?: multipartFormBody?.let {
+            it.parts.map { part ->
+                part.headers?.last()?.second?.let {
+                    val isFile = it.contains("filename=")
+                    val array = it.split(";")
+                    var name: String = ""
+                    var value : String? = ""
+
+                    array.map {
+                        val newStr = it.trim()
+                        if (newStr.startsWith("name=\"")) {
+                            name = newStr.removePrefix("name=\"").removeSuffix("\"").trim()
+                        }
+                        else if (isFile && newStr.startsWith("filename=\"")) {
+                            value = "@" + newStr.removePrefix("filename=\"").removeSuffix("\"").trim()
+                        }
+                    }
+
+                    if (!isFile) {
+                        value = getBodyAsString(part.body)
+                    }
+
+                    parts.add(String.format(FORMAT_MULTIPART_FORM_BODY, name, value))
+                }
+            }
+        } ?: binaryBody?.let {
+
+//            val buffer = Buffer()
+//            it.writeTo(buffer)
+
+            // 임의의 파일네임 적용
+            parts.add(String.format(FORMAT_BINARY_BODY, "filename"))
+
+        } ?: run {
+            if (body != null) {
+                parts.add(String.format(FORMAT_BODY, body))
+            }
         }
 
         if (compressed) {

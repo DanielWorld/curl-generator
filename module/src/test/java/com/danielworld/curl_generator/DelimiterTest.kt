@@ -20,7 +20,7 @@ import java.net.URLEncoder
 )
 // Why use Robolectric ? : Because it contains many mocks of Android class which running on local JVM. (No need Android emulator or Device.// So. Use RobolectricTestRunner.class instead of MockitoJUnitRunner.class. Robolectric handle Android API.
 @RunWith(RobolectricTestRunner::class)
-class HttpFormUrlEncodedPostRequestTest {
+class DelimiterTest {
 
     // key
     private val CONTENT_TYPE = "Content-Type"
@@ -48,34 +48,7 @@ class HttpFormUrlEncodedPostRequestTest {
     }
 
     @Test
-    fun testFormUrlEncoded() {
-
-        val requestBody = FormBody.Builder()
-            // Encoded 된 데이터가 아님.
-//            .addEncoded(GRANT_TYPE, mGrantType)
-//            .addEncoded(USER_NAME, mUserName)
-//            .addEncoded(PASSWORD, mPassword)
-
-                // add 시 알아서 encoded 해줌
-            .add(GRANT_TYPE, mGrantType)
-            .add(USER_NAME, mUserName)
-            .add(PASSWORD, mPassword)
-            .build()
-
-        val request = Request.Builder()
-            .url(mUrl)
-            .post(requestBody)
-            .build()
-
-        val expected = "curl -X POST -H \"$CONTENT_TYPE:$mFormUrlEncodedContentType\" -d '$GRANT_TYPE=${URLEncoder.encode(mGrantType)}&$USER_NAME=${URLEncoder.encode(mUserName)}&$PASSWORD=${URLEncoder.encode(mPassword)}' \"$mUrl\""
-
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.EMPTY_SPACE).build()
-
-        Assert.assertEquals(expected, actual)
-    }
-
-    @Test
-    fun testGzipFormUrlEncoded() {
+    fun testBackslashNewLine() {
 
         val requestBody = FormBody.Builder()
             // add 시 알아서 encoded 해줌
@@ -90,9 +63,19 @@ class HttpFormUrlEncodedPostRequestTest {
             .post(requestBody)
             .build()
 
-        val expected = "curl -X POST -H \"$ACCEPT_ENCODING:$mGzip\" -H \"$CONTENT_TYPE:$mFormUrlEncodedContentType\" -d '$GRANT_TYPE=${URLEncoder.encode(mGrantType)}&$USER_NAME=${URLEncoder.encode(mUserName)}&$PASSWORD=${URLEncoder.encode(mPassword)}' --compressed \"$mUrl\""
+        val expected = "curl \\\n" +
+                "-X POST \\\n" +
+                "-H \"$ACCEPT_ENCODING:$mGzip\" \\\n" +
+                "-H \"$CONTENT_TYPE:$mFormUrlEncodedContentType\" \\\n" +
+                "--data-urlencode \"$GRANT_TYPE=${URLEncoder.encode(mGrantType)}\" \\\n" +
+                "--data-urlencode \"$USER_NAME=${URLEncoder.encode(mUserName)}\" \\\n" +
+                "--data-urlencode \"$PASSWORD=${URLEncoder.encode(mPassword)}\" \\\n" +
+                "--compressed \\\n" +
+                "\"$mUrl\""
 
-        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.EMPTY_SPACE).build()
+        val actual = CurlGenerator(request, CurlInterceptor.Delimiter.BACKSLASH_NEW_LINE).build()
+
+//        print(actual)
 
         Assert.assertEquals(expected, actual)
     }
