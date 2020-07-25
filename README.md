@@ -1,5 +1,5 @@
-# curl-generator
-A curl generator which intercept OkHttp http request and generate cURL
+# curl-interceptor
+A curl interceptor which intercept OkHttp http request and generate cURL
 
 ## Gradle build
 build.gradle
@@ -12,7 +12,7 @@ buildscript {
 
 dependencies {
     ...
-    // Daniel (2016-06-23 14:37:35): Added cURL-Interceptor
+    // Daniel (2016-06-23 14:37:35): Added curl-interceptor
     implementation 'com.danielworld:curl-interceptor:1.0.1'
     
     // kotlin
@@ -25,11 +25,11 @@ dependencies {
 </pre>
 
 ## License
-curl-generator is licensed under the Apache License, Version 2.0.
+curl-interceptor is licensed under the Apache License, Version 2.0.
 See [LICENSE](LICENSE.txt) for full license text.
 
 ```
-Copyright (c) 2019 DanielWorld.
+Copyright (c) 2019-2020 DanielWorld.
 @Author Namgyu Park
 
 Licensed under the Apache License, Version 2.0 (the "License");
