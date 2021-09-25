@@ -1,10 +1,11 @@
-package com.danielworld.curl_generator
+package com.danielworld.curl.generator
 
 import android.os.Build
 import com.danielworld.curl.generator.CurlInterceptor
 import com.danielworld.curl.generator.internal.CurlGenerator
 import okhttp3.FormBody
 import okhttp3.Request
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -14,12 +15,10 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.net.URLEncoder
 
-// For Robolectrics 4.3.x, Android SDK 29 requires Java 9 (have Java 8). so set sdk = 28 immediately
 @Config(
     manifest = Config.NONE,
-    sdk = [Build.VERSION_CODES.P]
+    sdk = [Build.VERSION_CODES.R]
 )
-// Why use Robolectric ? : Because it contains many mocks of Android class which running on local JVM. (No need Android emulator or Device.// So. Use RobolectricTestRunner.class instead of MockitoJUnitRunner.class. Robolectric handle Android API.
 @RunWith(RobolectricTestRunner::class)
 class HttpFormUrlEncodedPostRequestTest {
 
@@ -42,10 +41,17 @@ class HttpFormUrlEncodedPostRequestTest {
     private val mUserName = "DanielPark!@#$%%^&*()-+"
     private val mPassword = "abc\"d\"e123+="
 
+    private lateinit var closeable : AutoCloseable
+
     @Before
     fun setUp() {
         // initialize mock, before executing each test
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
+    }
+
+    @After
+    fun shutdown() {
+        closeable.close()
     }
 
     @Test
@@ -68,7 +74,7 @@ class HttpFormUrlEncodedPostRequestTest {
             .post(requestBody)
             .build()
 
-        val expected = "curl -X POST -H \"$CONTENT_TYPE:$mFormUrlEncodedContentType\" --data-urlencode \"$GRANT_TYPE=${URLEncoder.encode(mGrantType)}\" --data-urlencode \"$USER_NAME=${URLEncoder.encode(mUserName)}\" --data-urlencode \"$PASSWORD=${URLEncoder.encode(mPassword)}\" \"$mUrl\""
+        val expected = "curl -X POST -H \"$CONTENT_TYPE:$mFormUrlEncodedContentType\" --data-urlencode \"$GRANT_TYPE=${URLEncoder.encode(mGrantType, "UTF-8")}\" --data-urlencode \"$USER_NAME=${URLEncoder.encode(mUserName, "UTF-8")}\" --data-urlencode \"$PASSWORD=${URLEncoder.encode(mPassword, "UTF-8")}\" \"$mUrl\""
 
         val actual = CurlGenerator(
             request,
@@ -94,7 +100,7 @@ class HttpFormUrlEncodedPostRequestTest {
             .post(requestBody)
             .build()
 
-        val expected = "curl -X POST -H \"$ACCEPT_ENCODING:$mGzip\" -H \"$CONTENT_TYPE:$mFormUrlEncodedContentType\" --data-urlencode \"$GRANT_TYPE=${URLEncoder.encode(mGrantType)}\" --data-urlencode \"$USER_NAME=${URLEncoder.encode(mUserName)}\" --data-urlencode \"$PASSWORD=${URLEncoder.encode(mPassword)}\" --compressed \"$mUrl\""
+        val expected = "curl -X POST -H \"$ACCEPT_ENCODING:$mGzip\" -H \"$CONTENT_TYPE:$mFormUrlEncodedContentType\" --data-urlencode \"$GRANT_TYPE=${URLEncoder.encode(mGrantType, "UTF-8")}\" --data-urlencode \"$USER_NAME=${URLEncoder.encode(mUserName, "UTF-8")}\" --data-urlencode \"$PASSWORD=${URLEncoder.encode(mPassword, "UTF-8")}\" --compressed \"$mUrl\""
 
         val actual = CurlGenerator(
             request,

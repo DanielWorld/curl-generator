@@ -1,3 +1,2 @@
-include ':androidApp'
 include ':module'
-rootProject.name='CurlGenerator'
+rootProject.name='curl-generator'
