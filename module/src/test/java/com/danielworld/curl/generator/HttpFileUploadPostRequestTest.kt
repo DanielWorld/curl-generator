@@ -1,4 +1,4 @@
-package com.danielworld.curl_generator
+package com.danielworld.curl.generator
 
 import android.os.Build
 import android.os.Environment
@@ -8,6 +8,8 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.Request
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -17,21 +19,26 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.io.File
 
-// For Robolectrics 4.3.x, Android SDK 29 requires Java 9 (have Java 8). so set sdk = 28 immediately
 @Config(
     manifest = Config.NONE,
-    sdk = [Build.VERSION_CODES.P]
+    sdk = [Build.VERSION_CODES.R]
 )
-// Why use Robolectric ? : Because it contains many mocks of Android class which running on local JVM. (No need Android emulator or Device.// So. Use RobolectricTestRunner.class instead of MockitoJUnitRunner.class. Robolectric handle Android API.
 @RunWith(RobolectricTestRunner::class)
 class HttpFileUploadPostRequestTest  {
 
     private val mUrl = "https://custom.test.com/hello"
 
+    private lateinit var closeable : AutoCloseable
+
     @Before
     fun setUp() {
         // initialize mock, before executing each test
-        MockitoAnnotations.initMocks(this)
+        closeable = MockitoAnnotations.openMocks(this)
+    }
+
+    @After
+    fun shutdown() {
+        closeable.close()
     }
 
     @Test
@@ -44,7 +51,9 @@ class HttpFileUploadPostRequestTest  {
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart("title", "file upload test")
-            .addFormDataPart("file", file.name, RequestBody.create("application/octet-stream".toMediaTypeOrNull(), file))
+            .addFormDataPart("file", file.name,
+                file.asRequestBody("application/octet-stream".toMediaTypeOrNull())
+            )
             .build()
 
         val request = Request.Builder()
@@ -73,7 +82,7 @@ class HttpFileUploadPostRequestTest  {
 
         println("file path : ${file.absolutePath}")
 
-        val requestBody = RequestBody.create("application/octet-stream".toMediaTypeOrNull(), file)
+        val requestBody = file.asRequestBody("application/octet-stream".toMediaTypeOrNull())
 
         val request = Request.Builder()
             .url(mUrl)
